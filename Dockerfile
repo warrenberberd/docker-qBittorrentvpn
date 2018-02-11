@@ -33,34 +33,34 @@ RUN buildDeps=" \
 		xz \
 	"; \
     set -x \
-&& apk add --update --virtual .build-deps $buildDeps \
-	&& export LIBTOR_VERSION=$(curl --silent "https://github.com/arvidn/libtorrent/tags" 2>&1 | grep -m 1 'libtorrent-' |  sed -e 's~^[ \t]*~~;s~[ \t]*$~~' | sed -n 's/.*href="\([^"]*\).*/\1/p' | sed 's!.*/!!') \
+    && apk add --update --virtual .build-deps $buildDeps \
+    && export LIBTOR_VERSION=$(curl --silent "https://github.com/arvidn/libtorrent/tags" 2>&1 | grep -m 1 'libtorrent-' |  sed -e 's~^[ \t]*~~;s~[ \t]*$~~' | sed -n 's/.*href="\([^"]*\).*/\1/p' | sed 's!.*/!!') \
     && export QBIT_VERSION=$(curl --silent "https://github.com/qbittorrent/qBittorrent/tags" 2>&1 | grep -m 1 'release-' |  sed -e 's~^[ \t]*~~;s~[ \t]*$~~' | sed -n 's/.*href="\([^"]*\).*/\1/p' | sed 's!.*/!!') \
-	&& curl -L "https://github.com/arvidn/libtorrent/archive/$LIBTOR_VERSION.tar.gz" -o libtor.tar.gz \
+    && curl -L "https://github.com/arvidn/libtorrent/archive/$LIBTOR_VERSION.tar.gz" -o libtor.tar.gz \
     && curl -L "https://github.com/qbittorrent/qBittorrent/archive/$QBIT_VERSION.tar.gz" -o qbittorrent.tar.gz \
     && mkdir -p /usr/src/libtorrent \
     && mkdir -p /usr/src/qbittorrent \
-	&& tar -xzf libtor.tar.gz -C /usr/src/libtorrent --strip-components=1 \
+    && tar -xzf libtor.tar.gz -C /usr/src/libtorrent --strip-components=1 \
     && tar -xzf qbittorrent.tar.gz -C /usr/src/qbittorrent --strip-components=1 \
     && rm libtor.tar.gz* \
-	&& rm qbittorrent.tar.gz* \
-	&& cd /usr/src/libtorrent/ \
-    && ./b2 install
+    && rm qbittorrent.tar.gz* \
+    && cd /usr/src/libtorrent/ \
+    && ./b2 install \
     && cd /usr/src/qbittorrent/ \
-	&& ./configure --disable-gui \
-	&& make -j$(nproc) \
+    && ./configure --disable-gui \
+    && make -j$(nproc) \
     && make install \
     && cd / \
-	&& rm -rf /usr/src/libtorrent \
+    && rm -rf /usr/src/libtorrent \
     && rm -rf /usr/src/qbittorrent \
-	&& runDeps="$( \
-		scanelf --needed --nobanner /usr/local/bin/qbittorrent-nox \
-			| awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-			| xargs -r apk info --installed \
-			| sort -u \
-		)" \
-	&& apk add --virtual .run-deps $runDeps gnutls-utils iptables \
-	&& apk del .build-deps \
+    && runDeps="$( \
+	scanelf --needed --nobanner /usr/local/bin/qbittorrent-nox \
+		| awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+		| xargs -r apk info --installed \
+		| sort -u \
+	)" \
+    && apk add --virtual .run-deps $runDeps gnutls-utils iptables \
+    && apk del .build-deps \
     && rm -rf /var/cache/apk/* 
 
 # Add configuration and scripts

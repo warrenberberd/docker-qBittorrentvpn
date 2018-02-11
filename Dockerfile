@@ -8,11 +8,11 @@ MAINTAINER MarkusMcNugen
 VOLUME /downloads
 VOLUME /config
 
-RUN usermod -u 99 nobody
-
 RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
     && echo "http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
-    && apk add --update bash openvpn iptables
+    && apk add --update bash openvpn iptables shadow
+
+RUN usermod -u 99 nobody
 
 RUN buildDeps=" \
         boost \

@@ -10,7 +10,7 @@ VOLUME /config
 
 RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
     && echo "http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
-    && apk add --update bash openvpn iptables shadow
+    && apk add --update bash openvpn iptables shadow apktools
 
 RUN usermod -u 99 nobody
 
@@ -45,7 +45,7 @@ RUN buildDeps=" \
     && rm libtor.tar.gz* \
     && rm qbittorrent.tar.gz* \
     && cd /usr/src/libtorrent/ \
-    && ./b2 install \
+    && b2 install \
     && cd /usr/src/qbittorrent/ \
     && ./configure --disable-gui \
     && make -j$(nproc) \

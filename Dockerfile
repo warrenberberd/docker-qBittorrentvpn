@@ -33,7 +33,7 @@ RUN buildDeps=" \
 		xz \
 	"; \
     set -x \
-	&& apk add --update --virtual .build-deps $buildDeps \
+&& apk add --update --virtual .build-deps $buildDeps \
 	&& export LIBTOR_VERSION=$(curl --silent "https://github.com/arvidn/libtorrent/tags" 2>&1 | grep -m 1 'libtorrent-' |  sed -e 's~^[ \t]*~~;s~[ \t]*$~~' | sed -n 's/.*href="\([^"]*\).*/\1/p' | sed 's!.*/!!') \
     && export QBIT_VERSION=$(curl --silent "https://github.com/qbittorrent/qBittorrent/tags" 2>&1 | grep -m 1 'release-' |  sed -e 's~^[ \t]*~~;s~[ \t]*$~~' | sed -n 's/.*href="\([^"]*\).*/\1/p' | sed 's!.*/!!') \
 	&& curl -L "https://github.com/arvidn/libtorrent/archive/$LIBTOR_VERSION.tar.gz" -o libtor.tar.gz \

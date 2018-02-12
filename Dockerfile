@@ -11,7 +11,7 @@ VOLUME /config
 RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
     && echo "http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
     && echo "http://dl-4.alpinelinux.org/alpine/edge/main/" >> /etc/apk/repositories \
-    && apk add --update bash openvpn iptables shadow apk-tools@edge
+    && apk add --update bash openvpn iptables shadow apk-tools
 
 RUN usermod -u 99 nobody
 

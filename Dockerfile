@@ -58,7 +58,7 @@ RUN buildDeps=" \
     && tar -xzf qbittorrent.tar.gz -C /usr/src/qbittorrent --strip-components=1 \
     && rm qbittorrent.tar.gz* \
     && cd /usr/src/qbittorrent/src/app \
-    && patch -i /tmp/patches/main.patch && \
+    && patch -i /tmp/patches/main.patch \
     && cd /usr/src/qbittorrent/ \
     && ./configure --disable-gui --prefix=/usr \
     && make -j$(nproc) \

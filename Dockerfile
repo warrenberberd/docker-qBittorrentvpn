@@ -10,7 +10,7 @@ VOLUME /config
 
 RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
     && echo "http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
-    && apk add --update bash openvpn iptables shadow apk-tools boost-system boost-thread ca-certificates 
+    && apk add --update bash openvpn iptables shadow apk-tools boost-system boost-thread ca-certificates unrar
 
 RUN usermod -u 99 nobody
 
@@ -22,6 +22,7 @@ RUN buildDeps=" \
 		cmake \
 		file \
 		g++ \
+		git \
 		geoip-dev \
 		gnutls-dev \
 		libtool \
@@ -50,12 +51,12 @@ RUN buildDeps=" \
     && ./autotool.sh \
     && export LDFLAGS=-L/opt/local/lib \
     && export CXXFLAGS=-I/opt/local/include \
-    && ./configure --disable-debug \
+    && ./configure --disable-debug --enable-encryption --prefix=/usr \
     && make install \
     && cd /usr/src/qbittorrent/ \
-    && ./configure --disable-gui \
+    && ./configure --disable-gui --prefix=/usr \
     && make -j$(nproc) \
-    && make && make install \
+    && make install \
     && cd / \
     && rm -rf /usr/src/libtorrent \
     && rm -rf /usr/src/qbittorrent \

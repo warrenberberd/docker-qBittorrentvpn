@@ -41,22 +41,23 @@ RUN buildDeps=" \
     set -x \
     && apk add --update --virtual .build-deps $buildDeps \
     && export LIBTOR_VERSION=$(curl --silent "https://github.com/arvidn/libtorrent/tags" 2>&1 | grep -m 1 'libtorrent-' |  sed -e 's~^[ \t]*~~;s~[ \t]*$~~' | sed -n 's/.*href="\([^"]*\).*/\1/p' | sed 's!.*/!!') \
-    && export QBIT_VERSION=$(curl --silent "https://github.com/qbittorrent/qBittorrent/tags" 2>&1 | grep -m 1 'release-' |  sed -e 's~^[ \t]*~~;s~[ \t]*$~~' | sed -n 's/.*href="\([^"]*\).*/\1/p' | sed 's!.*/!!') \
     && curl -L "https://github.com/arvidn/libtorrent/archive/$LIBTOR_VERSION.tar.gz" -o libtor.tar.gz \
-    && curl -L "https://github.com/qbittorrent/qBittorrent/archive/$QBIT_VERSION.tar.gz" -o qbittorrent.tar.gz \
     && mkdir -p /usr/src/libtorrent \
-    && mkdir -p /usr/src/qbittorrent \
     && tar -xzf libtor.tar.gz -C /usr/src/libtorrent --strip-components=1 \
-    && tar -xzf qbittorrent.tar.gz -C /usr/src/qbittorrent --strip-components=1 \
     && rm libtor.tar.gz* \
-    && rm qbittorrent.tar.gz* \
     && cd /usr/src/libtorrent/ \
     && ./autotool.sh \
     && export LDFLAGS=-L/opt/local/lib \
     && export CXXFLAGS=-I/opt/local/include \
     && ./configure --disable-debug --enable-encryption --prefix=/usr \
     && make -j$(nproc) \
-    && make install \
+    && make install 
+	
+RUN export QBIT_VERSION=$(curl --silent "https://github.com/qbittorrent/qBittorrent/tags" 2>&1 | grep -m 1 'release-' |  sed -e 's~^[ \t]*~~;s~[ \t]*$~~' | sed -n 's/.*href="\([^"]*\).*/\1/p' | sed 's!.*/!!') \
+    && curl -L "https://github.com/qbittorrent/qBittorrent/archive/$QBIT_VERSION.tar.gz" -o qbittorrent.tar.gz \
+    && mkdir -p /usr/src/qbittorrent \
+    && tar -xzf qbittorrent.tar.gz -C /usr/src/qbittorrent --strip-components=1 \
+    && rm qbittorrent.tar.gz* \
     && cd /usr/src/qbittorrent/src/app \
     && cp /tmp/patches/main.patch /usr/src/qbittorrent/src/app \
     && patch -i /usr/src/qbittorrent/src/app/main.patch \

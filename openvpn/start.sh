@@ -45,30 +45,30 @@ if [[ $VPN_ENABLED == "yes" ]]; then
 	/usr/bin/dos2unix "${VPN_CONFIG}" 1> /dev/null
 	
 	# parse values from ovpn file
-	export vpn_remote_line=$(cat "${VPN_CONFIG}" | perl -e '(?<=^remote\s)[^\n\r]+' | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+	export vpn_remote_line=$(cat "${VPN_CONFIG}" | awk '/remote / {print; exit}' | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 	if [[ ! -z "${vpn_remote_line}" ]]; then
 		echo "$(date) [info] VPN remote line defined as '${vpn_remote_line}'"
 	else
 		echo "[crit] VPN configuration file ${VPN_CONFIG} does not contain 'remote' line, showing contents of file before exit..."
 		cat "${VPN_CONFIG}" && exit 1
 	fi
-	export VPN_REMOTE=$(echo "${vpn_remote_line}" | grep -P -o -m 1 '^[^\s\r\n]+' | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+	export VPN_REMOTE=$(echo "${vpn_remote_line}" | awk '/remote / {print $2; exit}'  | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 	if [[ ! -z "${VPN_REMOTE}" ]]; then
 		echo "$(date) [info] VPN_REMOTE defined as '${VPN_REMOTE}'"
 	else
 		echo "[crit] VPN_REMOTE not found in ${VPN_CONFIG}, exiting..." && exit 1
 	fi
-	export VPN_PORT=$(echo "${vpn_remote_line}" | grep -P -o -m 1 '(?<=\s)\d{2,5}(?=\s)?+' | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+	export VPN_PORT=$(echo "${vpn_remote_line}" | awk '/remote / {print $3; exit}' | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 	if [[ ! -z "${VPN_PORT}" ]]; then
 		echo "$(date) [info] VPN_PORT defined as '${VPN_PORT}'"
 	else
 		echo "[crit] VPN_PORT not found in ${VPN_CONFIG}, exiting..." && exit 1
 	fi
-	export VPN_PROTOCOL=$(cat "${VPN_CONFIG}" | grep -P -o -m 1 '(?<=^proto\s)[^\r\n]+' | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+	export VPN_PROTOCOL=$(cat "${VPN_CONFIG}" | awk '/proto / {print $2; exit}' | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 	if [[ ! -z "${VPN_PROTOCOL}" ]]; then
 		echo "$(date) [info] VPN_PROTOCOL defined as '${VPN_PROTOCOL}'"
 	else
-		export VPN_PROTOCOL=$(echo "${vpn_remote_line}" | grep -P -o -m 1 'udp|tcp-client|tcp$' | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+		export VPN_PROTOCOL=$(echo "${vpn_remote_line}" | grep -m 1 'udp\|tcp$' | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 		if [[ ! -z "${VPN_PROTOCOL}" ]]; then
 			echo "$(date) [info] VPN_PROTOCOL defined as '${VPN_PROTOCOL}'"
 		else

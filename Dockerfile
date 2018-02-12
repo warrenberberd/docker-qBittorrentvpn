@@ -16,7 +16,7 @@ RUN yesterdays_date=$(date --date="-1 days ago" +%Y/%m/%d) \
     && mkdir -p /etc/pacman.d \
     && echo 'Server = https://archive.archlinux.org/repos/'"${yesterdays_date}"'/$repo/os/$arch' > /etc/pacman.d/mirrorlist \
     && echo 'Server = http://archive.virtapi.org/repos/'"${yesterdays_date}"'/$repo/os/$arch' >> /etc/pacman.d/mirrorlist \
-    && pacman-db-upgrade
+    && pacman-db-upgrade \
     && pacman -S grep net-tools --noconfirm \
 
 RUN usermod -u 99 nobody

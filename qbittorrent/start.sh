@@ -13,13 +13,13 @@ if [[ ! -e /config/qBittorrent/config/qBittorrent.conf ]]; then
 	chmod 755 /config/qBittorrent/config/qBittorrent.conf
 fi
 
-echo "[info] Starting qBittorrent daemon..."
+echo "$(date) [info] Starting qBittorrent daemon..."
 /bin/bash /etc/qbittorrent/qbittorrent.init start &
 chmod -R 755 /config/qBittorrent
 
 sleep 1
 qbpid=$(pgrep -o -x qbittorrent-nox) 
-echo "[info] qBittorrent PID: $qbpid"
+echo "$(date) [info] qBittorrent PID: $qbpid"
 
 if [ -e /proc/$qbpid ]; then
 	if [[ -e /config/qBittorrent/data/logs/qbittorrent.log ]]; then

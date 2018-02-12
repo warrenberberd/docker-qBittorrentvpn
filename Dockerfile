@@ -28,6 +28,7 @@ RUN buildDeps=" \
 		linux-pam-dev \
 		lz4-dev \
 		make \
+		qt-dev \
 		readline-dev \
 		tar \
 		xz \

@@ -15,8 +15,8 @@ RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community/" >> /etc/apk/reposi
 RUN usermod -u 99 nobody
 
 RUN buildDeps=" \
-        boost \
-        boost-build \
+		automake \
+		autoconf \
 		curl \
 		g++ \
 		gnutls-dev \
@@ -46,11 +46,14 @@ RUN buildDeps=" \
     && rm libtor.tar.gz* \
     && rm qbittorrent.tar.gz* \
     && cd /usr/src/libtorrent/ \
-    && b2 install \
+    && export LDFLAGS=-L/opt/local/lib \
+    && export CXXFLAGS=-I/opt/local/include \
+    && ./configure --disable-debug \
+    && make install \
     && cd /usr/src/qbittorrent/ \
     && ./configure --disable-gui \
     && make -j$(nproc) \
-    && make install \
+    && make && make install \
     && cd / \
     && rm -rf /usr/src/libtorrent \
     && rm -rf /usr/src/qbittorrent \

@@ -24,6 +24,7 @@ RUN buildDeps=" \
 		libev-dev \
 		libnl3-dev \
 		libseccomp-dev \
+		libtool \
 		linux-headers \
 		linux-pam-dev \
 		lz4-dev \

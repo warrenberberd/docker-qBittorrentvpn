@@ -11,4 +11,4 @@
 +}
  #endif // Q_OS_UNIX
 
-#ifdef STACKTRACE_WIN
+ #ifdef STACKTRACE_WIN

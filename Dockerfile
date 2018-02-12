@@ -57,7 +57,7 @@ RUN buildDeps=" \
     && ./configure --disable-debug --enable-encryption --prefix=/usr \
     && make install \
     && cd /usr/src/qbittorrent/src/app \
-    && patch -i /tmp/patches/main.patch && \
+    && patch -i /tmp/patches/main.patch \
     && cd /usr/src/qbittorrent/ \
     && ./configure --disable-gui --prefix=/usr \
     && make -j$(nproc) \

@@ -10,28 +10,25 @@ VOLUME /config
 
 RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
     && echo "http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
-    && apk add --update bash openvpn iptables shadow apk-tools
+    && apk add --update bash openvpn iptables shadow apk-tools boost-system boost-thread ca-certificates 
 
 RUN usermod -u 99 nobody
 
 RUN buildDeps=" \
 		automake \
 		autoconf \
-		boost \
 		boost-dev \
-		boost-system \
 		curl \
+		cmake \
+		file \
 		g++ \
+		geoip-dev \
 		gnutls-dev \
-		gpgme \
-		libev-dev \
-		libnl3-dev \
-		libseccomp-dev \
 		libtool \
 		linux-headers \
 		linux-pam-dev \
-		lz4-dev \
 		make \
+		qt5-qttools-dev \
 		qt5-qtbase-dev \
 		readline-dev \
 		tar \

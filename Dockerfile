@@ -17,6 +17,9 @@ RUN usermod -u 99 nobody
 RUN buildDeps=" \
 		automake \
 		autoconf \
+		boost \
+		boost-dev \
+		boost-system \
 		curl \
 		g++ \
 		gnutls-dev \

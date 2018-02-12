@@ -57,8 +57,7 @@ RUN buildDeps=" \
     && mkdir -p /usr/src/qbittorrent \
     && tar -xzf qbittorrent.tar.gz -C /usr/src/qbittorrent --strip-components=1 \
     && rm qbittorrent.tar.gz* \
-    && export EXECINFO=$(grep -rne 'include <execinfo.h>' /usr/src/qbittorrent/src/app/main.cpp | grep -Eo '^[^:]+') \
-    && exec /bin/bash sed -i "$(EXECINFO)s/.*/" /usr/src/qbittorrent/src/app/main.cpp \
+    && sed -i "$(grep -rne 'include <execinfo.h>' /usr/src/qbittorrent/src/app/main.cpp | grep -Eo '^[^:]+')s/.*/" /usr/src/qbittorrent/src/app/main.cpp \
     && export STACKTRACE=$(grep -rne 'include "stacktrace.h"' /usr/src/qbittorrent/src/app/main.cpp | grep -Eo '^[^:]+') \
     && sed -i "$STACKTRACEs/.*/" /usr/src/qbittorrent/src/app/main.cpp \
     && cd /usr/src/qbittorrent/ \

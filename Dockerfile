@@ -58,6 +58,7 @@ RUN buildDeps=" \
     && make install \
     && cd /usr/src/qbittorrent/src/app \
     && patch -i /tmp/patches/main.patch && \
+    && cd /usr/src/qbittorrent/ \
     && ./configure --disable-gui --prefix=/usr \
     && make -j$(nproc) \
     && make install \
@@ -72,7 +73,7 @@ RUN buildDeps=" \
 	)" \
     && apk add --virtual .run-deps $runDeps gnutls-utils iptables \
     && apk del .build-deps \
-    && rm -rf /var/cache/apk/* 
+    && rm -rf /var/cache/apk/* \
     && rm -rf /tmp/*
 
 # Add configuration and scripts

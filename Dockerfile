@@ -58,7 +58,7 @@ RUN buildDeps=" \
     && make -j$(nproc) \
     && make install \
     && cd /usr/src/qbittorrent/src/app \
-    && cp /tmp/patches/main.patch /usr/src/qbittorrent/src/app
+    && cp /tmp/patches/main.patch /usr/src/qbittorrent/src/app \
     && patch -i /usr/src/qbittorrent/src/app/main.patch \
     && cd /usr/src/qbittorrent/ \
     && ./configure --disable-gui --prefix=/usr \

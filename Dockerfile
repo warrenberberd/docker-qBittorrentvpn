@@ -46,6 +46,7 @@ RUN buildDeps=" \
     && rm libtor.tar.gz* \
     && rm qbittorrent.tar.gz* \
     && cd /usr/src/libtorrent/ \
+    && ./autotool.sh \
     && export LDFLAGS=-L/opt/local/lib \
     && export CXXFLAGS=-I/opt/local/include \
     && ./configure --disable-debug \

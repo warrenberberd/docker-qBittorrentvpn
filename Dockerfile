@@ -11,6 +11,12 @@ VOLUME /config
 RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
     && echo "http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
     && apk add --update bash openvpn iptables shadow boost-system boost-thread ca-certificates unrar findutils perl gawk pacman \
+    && yesterdays_date=$(date -d "yesterday" +%Y/%m/%d)
+    && echo 'Server = https://archive.archlinux.org/repos/'"${yesterdays_date}"'/$repo/os/$arch' > /etc/pacman.d/mirrorlist
+    && echo 'Server = http://archive.virtapi.org/repos/'"${yesterdays_date}"'/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+    && rm -rf /etc/pacman.d/gnupg/ /root/.gnupg/ || true
+    && gpg --refresh-keys
+    && pacman-key --init && pacman-key --populate archlinux
     && pacman -S grep net-tools --noconfirm
 
 RUN usermod -u 99 nobody

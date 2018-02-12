@@ -13,6 +13,7 @@ RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community/" >> /etc/apk/reposi
     && apk add --update coreutils bash openvpn iptables shadow boost-system boost-thread ca-certificates unrar findutils perl gawk pacman
 
 RUN yesterdays_date=$(date --date="-1 days ago" +%Y/%m/%d) \
+    && mkdir -p /etc/pacman.d \
     && echo 'Server = https://archive.archlinux.org/repos/'"${yesterdays_date}"'/$repo/os/$arch' > /etc/pacman.d/mirrorlist \
     && echo 'Server = http://archive.virtapi.org/repos/'"${yesterdays_date}"'/$repo/os/$arch' >> /etc/pacman.d/mirrorlist \
     && rm -rf /etc/pacman.d/gnupg/ /root/.gnupg/ || true \

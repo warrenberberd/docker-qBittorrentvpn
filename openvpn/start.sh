@@ -82,7 +82,7 @@ if [[ $VPN_ENABLED == "yes" ]]; then
 		export VPN_PROTOCOL="tcp"
 	fi
 	
-	VPN_DEVICE_TYPE=$(cat "${VPN_CONFIG}" | grep -P -o -m 1 '(?<=^dev\s)[^\r\n\d]+' | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+	VPN_DEVICE_TYPE=$(cat "${VPN_CONFIG}" | awk '/dev / {print $2; exit}' | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 	if [[ ! -z "${VPN_DEVICE_TYPE}" ]]; then
 		export VPN_DEVICE_TYPE="${VPN_DEVICE_TYPE}0"
 		echo "$(date) [info] VPN_DEVICE_TYPE defined as '${VPN_DEVICE_TYPE}'"

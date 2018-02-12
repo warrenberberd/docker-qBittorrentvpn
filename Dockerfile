@@ -10,7 +10,8 @@ VOLUME /config
 
 RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
     && echo "http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
-    && apk add --update bash openvpn iptables shadow boost-system boost-thread ca-certificates unrar findutils perl gawk
+    && apk add --update bash openvpn iptables shadow boost-system boost-thread ca-certificates unrar findutils perl gawk pacman \
+    && pacman -S grep net-tools --noconfirm
 
 RUN usermod -u 99 nobody
 

@@ -14,6 +14,9 @@ RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community/" >> /etc/apk/reposi
 
 RUN usermod -u 99 nobody
 
+# copy patches
+COPY patches/ /tmp/patches
+
 RUN buildDeps=" \
 		automake \
 		autoconf \
@@ -53,7 +56,8 @@ RUN buildDeps=" \
     && export CXXFLAGS=-I/opt/local/include \
     && ./configure --disable-debug --enable-encryption --prefix=/usr \
     && make install \
-    && cd /usr/src/qbittorrent/ \
+    && cd /usr/src/qbittorrent/src/app \
+    && patch -i /tmp/patches/main.patch && \
     && ./configure --disable-gui --prefix=/usr \
     && make -j$(nproc) \
     && make install \
@@ -69,6 +73,7 @@ RUN buildDeps=" \
     && apk add --virtual .run-deps $runDeps gnutls-utils iptables \
     && apk del .build-deps \
     && rm -rf /var/cache/apk/* 
+    && rm -rf /tmp/*
 
 # Add configuration and scripts
 ADD openvpn/ /etc/openvpn/

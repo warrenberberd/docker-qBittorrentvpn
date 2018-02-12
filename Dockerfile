@@ -55,6 +55,7 @@ RUN buildDeps=" \
     && export LDFLAGS=-L/opt/local/lib \
     && export CXXFLAGS=-I/opt/local/include \
     && ./configure --disable-debug --enable-encryption --prefix=/usr \
+    && make -j$(nproc)
     && make install \
     && cd /usr/src/qbittorrent/src/app \
     && patch -i /tmp/patches/main.patch \

@@ -36,7 +36,7 @@ if [[ ! -z "${UMASK}" ]]; then
   echo "[info] UMASK defined as '${UMASK}'" | ts '%Y-%m-%d %H:%M:%.S'
 else
   echo "[warn] UMASK not defined (via -e UMASK), defaulting to '002'" | ts '%Y-%m-%d %H:%M:%.S'
-  export UMASK="022"
+  export UMASK="002"
 fi
 
 

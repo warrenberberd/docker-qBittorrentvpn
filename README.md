@@ -13,6 +13,7 @@ Docker container which runs the latest headless qBittorrent client with WebUI wh
 * IP tables kill switch to prevent IP leaking when VPN connection fails
 * Specify name servers to add to container
 * Configure UID and GID for config files and downloads by qBittorrent
+* WebUI\CSRFProtection set to false by default for Unraid users
 
 # Run container from Docker registry
 The container is available from the Docker registry and this is the simplest way to get it.

@@ -29,6 +29,16 @@ else
 	 useradd -c "qbittorent user" -g $PGID -u $PUID qbittorent
 fi
 
+# set umask
+export UMASK=$(echo "${UMASK}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+
+if [[ ! -z "${UMASK}" ]]; then
+  echo "[info] UMASK defined as '${UMASK}'" | ts '%Y-%m-%d %H:%M:%.S'
+else
+  echo "[warn] UMASK not defined (via -e UMASK), defaulting to '022'" | ts '%Y-%m-%d %H:%M:%.S'
+  export UMASK="022"
+fi
+
 
 # Set qBittorrent WebUI and Incoming ports
 if [ ! -z "${WEBUI_PORT}" ]; then

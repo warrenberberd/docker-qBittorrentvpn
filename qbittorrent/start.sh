@@ -11,6 +11,25 @@ if [[ ! -e /config/qBittorrent/config/qBittorrent.conf ]]; then
 	chmod 755 /config/qBittorrent/config/qBittorrent.conf
 fi
 
+## Check for missing group
+/bin/egrep  -i "^${PGID}:" /etc/passwd
+if [ $? -eq 0 ]; then
+   echo "Group $PGID exists"
+else
+   echo "Adding $PGID group"
+	 groupadd -g $PGID qbittorent
+fi
+
+## Check for missing userid
+/bin/egrep  -i "^${PUID}:" /etc/passwd
+if [ $? -eq 0 ]; then
+   echo "User $PUID exists in /etc/passwd"
+else
+   echo "Adding $PUID user"
+	 useradd -c "qbittorent user" -g $PGID -u $PUID qbittorent
+fi
+
+
 # Set qBittorrent WebUI and Incoming ports
 if [ ! -z "${WEBUI_PORT}" ]; then
 	webui_port_exist=$(cat /config/qBittorrent/config/qBittorrent.conf | grep -m 1 "WebUI\Port=${WEBUI_PORT}")
@@ -45,7 +64,7 @@ echo "[info] Starting qBittorrent daemon..." | ts '%Y-%m-%d %H:%M:%.S'
 chmod -R 755 /config/qBittorrent
 
 sleep 1
-qbpid=$(pgrep -o -x qbittorrent-nox) 
+qbpid=$(pgrep -o -x qbittorrent-nox)
 echo "[info] qBittorrent PID: $qbpid" | ts '%Y-%m-%d %H:%M:%.S'
 
 if [ -e /proc/$qbpid ]; then

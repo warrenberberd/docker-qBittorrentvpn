@@ -67,6 +67,9 @@ Access http://IPADDRESS:PORT from a browser on the same network.
 |`WebUI Username`| admin |
 |`WebUI Password`| adminadmin |
 
+## Origin header & Target origin mismatch
+WebUI\CSRFProtection must be set to false in qBittorrent.conf if using an unconfigured reverse proxy or forward request within a browser. This is the default setting unless changed. This file can be found in the dockers config directory in /qBittorrent/config
+
 ## WebUI: Invalid Host header, port mismatch
 qBittorrent throws a [WebUI: Invalid Host header, port mismatch](https://github.com/qbittorrent/qBittorrent/issues/7641#issuecomment-339370794) error if you use port forwarding with bridge networking due to security features to prevent DNS rebinding attacks. If you need to run qBittorrent on different ports, instead edit the WEBUI_PORT_ENV and/or INCOMING_PORT_ENV variables AND the exposed ports to change the native ports qBittorrent uses.
 

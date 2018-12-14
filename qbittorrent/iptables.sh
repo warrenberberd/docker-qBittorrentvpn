@@ -26,8 +26,8 @@ echo "[info] LAN Network defined as ${LAN_NETWORK}" | ts '%Y-%m-%d %H:%M:%.S'
 DEFAULT_GATEWAY=$(ip -4 route list 0/0 | cut -d ' ' -f 3)
 echo "[info] Default gateway defined as ${DEFAULT_GATEWAY}" | ts '%Y-%m-%d %H:%M:%.S'
 
-echo "[info] Adding ${LAN_NETWORK} as route via docker eth0" | ts '%Y-%m-%d %H:%M:%.S'
-ip route add "${LAN_NETWORK}" via "${DEFAULT_GATEWAY}" dev eth0
+#echo "[info] Adding ${LAN_NETWORK} as route via docker eth0" | ts '%Y-%m-%d %H:%M:%.S'
+#ip route add "${LAN_NETWORK}" via "${DEFAULT_GATEWAY}" dev eth0
 
 echo "[info] ip route defined as follows..." | ts '%Y-%m-%d %H:%M:%.S'
 echo "--------------------"

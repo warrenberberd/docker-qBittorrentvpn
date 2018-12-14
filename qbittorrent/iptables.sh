@@ -20,7 +20,7 @@ DEBUG=false
 
 # get default gateway of interfaces as looping through them
 DEFAULT_GATEWAY=$(ip -4 route list 0/0 | cut -d ' ' -f 3)
-echo "[info] Default gateway defined as ${LAN_NETWORK}" | ts '%Y-%m-%d %H:%M:%.S'
+echo "[info] Default gateway defined as ${DEFAULT_GATEWAY}" | ts '%Y-%m-%d %H:%M:%.S'
 
 # strip whitespace from start and end of lan_network_item
 export LAN_NETWORK=$(echo "${LAN_NETWORK}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')

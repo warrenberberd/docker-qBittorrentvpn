@@ -1,7 +1,7 @@
 [preview]: https://raw.githubusercontent.com/MarkusMcNugen/docker-templates/master/qbittorrentvpn/Screenshot.png "qBittorrent Preview"
 
 # qBittorrent with WebUI and OpenVPN
-Docker container which runs a headless qBittorrent v4.3 client with WebUI while connecting to OpenVPN with iptables killswitch to prevent IP leakage when the tunnel goes down.
+Docker container which runs the latest headless qBittorrent client with WebUI while connecting to OpenVPN with iptables killswitch to prevent IP leakage when the tunnel goes down.
 
 ![alt text][preview]
 

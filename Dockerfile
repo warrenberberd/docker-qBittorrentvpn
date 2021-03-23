@@ -37,6 +37,7 @@ RUN buildDeps=" \
 		automake \
 		autoconf \
 		boost-dev \
+		clang-libs \
 		curl \
 		cmake \
 		file \

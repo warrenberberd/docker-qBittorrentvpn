@@ -25,6 +25,7 @@ RUN apk add --no-cache --upgrade findutils
 RUN apk add --no-cache --upgrade perl 
 RUN apk add --no-cache --upgrade gawk 
 RUN apk add --no-cache --upgrade pacman 
+RUN apk add --no-cache --upgrade clang 
 RUN apk add --no-cache --upgrade net-tools 
 RUN update-ca-certificates
 

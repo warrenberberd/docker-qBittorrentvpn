@@ -10,9 +10,22 @@ VOLUME /config
 
 RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories
 RUN echo "http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories
-RUN apk upgrade --no-cache \
-    && apk add --no-cache coreutils bash openvpn iptables shadow boost-system boost-thread ca-certificates unrar findutils perl gawk pacman net-tools \
-    && update-ca-certificates
+RUN apk upgrade --no-cache 
+RUN apk add --no-cache coreutils 
+RUN apk add --no-cache bash 
+RUN apk add --no-cache openvpn 
+RUN apk add --no-cache iptables 
+RUN apk add --no-cache shadow 
+RUN apk add --no-cache boost-system 
+RUN apk add --no-cache boost-thread 
+RUN apk add --no-cache ca-certificates 
+RUN apk add --no-cache unrar 
+RUN apk add --no-cache findutils 
+RUN apk add --no-cache perl 
+RUN apk add --no-cache gawk 
+RUN apk add --no-cache pacman 
+RUN apk add --no-cache net-tools 
+RUN update-ca-certificates
 
 RUN usermod -u 99 nobody
 

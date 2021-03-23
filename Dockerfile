@@ -2,7 +2,7 @@
 #
 # Version 1.8
 
-FROM alpine:latest
+FROM alpine:edge
 MAINTAINER MarkusMcNugen
 
 VOLUME /downloads

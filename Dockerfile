@@ -60,10 +60,10 @@ RUN buildDeps=" \
     && apk add --update --virtual .build-deps $buildDeps
     
 RUN export LIBTOR_VERSION=$(curl --silent "https://github.com/arvidn/libtorrent/tags" 2>&1 | grep -m 1 'libtorrent-' |  sed -e 's~^[t]*~~;s~[t]*$~~' | sed -n 's/.*href="\([^"]*\).*/\1/p' | sed 's!.*/!!') \
-&& curl -SL "https://github.com/arvidn/libtorrent/archive/$LIBTOR_VERSION.tar.gz" \
+&& curl -SL "https://github.com/arvidn/libtorrent/archive/$LIBTOR_VERSION.tar.gz" -o tibtor.tar.gz \
 && mkdir -p /usr/src/libtorrent \
-&& tar -xf "$LIBTOR_VERSION.tar.gz" -C /usr/src/libtorrent --strip-components=1 \
-&& rm "$LIBTOR_VERSION.tar.gz"
+&& tar -xf "tibtor.tar.gz" -C /usr/src/libtorrent --strip-components=1 \
+&& rm "tibtor.tar.gz"
 WORKDIR /usr/src/libtorrent/
 RUN ./autotool.sh
 RUN export LDFLAGS=-L/opt/local/lib

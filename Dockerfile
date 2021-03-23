@@ -10,7 +10,7 @@ VOLUME /config
 
 RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories
 RUN echo "http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories
-RUN RUN apk upgrade --no-cache \
+RUN apk upgrade --no-cache \
     && apk add --no-cache coreutils bash openvpn iptables shadow boost-system boost-thread ca-certificates unrar findutils perl gawk pacman net-tools \
     && update-ca-certificates
 

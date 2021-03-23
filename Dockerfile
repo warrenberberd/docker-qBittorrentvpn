@@ -8,9 +8,9 @@ MAINTAINER MarkusMcNugen
 VOLUME /downloads
 VOLUME /config
 
-RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
-    && echo "http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
-    && apk add --update coreutils bash openvpn iptables shadow boost-system boost-thread ca-certificates unrar findutils perl gawk pacman net-tools
+RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories
+RUN echo "http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories
+RUN apk add --update coreutils bash openvpn iptables shadow boost-system boost-thread ca-certificates unrar findutils perl gawk pacman net-tools
 
 RUN usermod -u 99 nobody
 

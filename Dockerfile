@@ -26,6 +26,7 @@ RUN apk add --no-cache --upgrade perl
 RUN apk add --no-cache --upgrade gawk 
 RUN apk add --no-cache --upgrade pacman 
 RUN apk add --no-cache --upgrade net-tools 
+RUN apk add --no-cache --upgrade tar
 RUN update-ca-certificates
 
 RUN usermod -u 99 nobody
@@ -52,7 +53,6 @@ RUN buildDeps=" \
 		qt5-qttools-dev \
 		qt5-qtbase-dev \
 		readline-dev \
-		tar \
 		xz \
 	"; \
     set -x \

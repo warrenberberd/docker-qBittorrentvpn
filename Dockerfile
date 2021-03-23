@@ -63,7 +63,7 @@ RUN curl -L "https://github.com/arvidn/libtorrent/archive/$LIBTOR_VERSION.tar.gz
 RUN mkdir -p /usr/src/libtorrent
 RUN tar -xzf libtor.tar.gz -C /usr/src/libtorrent --strip-components=1
 RUN rm libtor.tar.gz*
-RUN cd /usr/src/libtorrent/
+WORKDIR /usr/src/libtorrent/
 RUN ./autotool.sh
 RUN export LDFLAGS=-L/opt/local/lib
 RUN export CXXFLAGS=-I/opt/local/include
@@ -75,13 +75,13 @@ RUN curl -L "https://github.com/qbittorrent/qBittorrent/archive/$QBIT_VERSION.ta
 RUN mkdir -p /usr/src/qbittorrent
 RUN tar -xzf qbittorrent.tar.gz -C /usr/src/qbittorrent --strip-components=1
 RUN rm qbittorrent.tar.gz*
-RUN cd /usr/src/qbittorrent/src/app
+WORKDIR /usr/src/qbittorrent/src/app
 RUN patch -i /tmp/patches/main.patch
-RUN cd /usr/src/qbittorrent/
+WORKDIR /usr/src/qbittorrent/
 RUN ./configure --disable-gui --prefix=/usr
 RUN make -j$(nproc)
 RUN make install
-RUN cd /
+WORKDIR /
 RUN rm -rf /usr/src/libtorrent
 RUN rm -rf /usr/src/qbittorrent
     

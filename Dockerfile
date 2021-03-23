@@ -27,6 +27,7 @@ RUN apk add --no-cache --upgrade gawk
 RUN apk add --no-cache --upgrade pacman 
 RUN apk add --no-cache --upgrade net-tools 
 RUN apk add --no-cache --upgrade tar
+RUN apk add --no-cache --upgrade gunzip
 RUN update-ca-certificates
 
 RUN usermod -u 99 nobody
@@ -61,7 +62,9 @@ RUN buildDeps=" \
 RUN export LIBTOR_VERSION=$(curl --silent "https://github.com/arvidn/libtorrent/tags" 2>&1 | grep -m 1 'libtorrent-' |  sed -e 's~^[t]*~~;s~[t]*$~~' | sed -n 's/.*href="\([^"]*\).*/\1/p' | sed 's!.*/!!')
 RUN curl -SL "https://github.com/arvidn/libtorrent/archive/$LIBTOR_VERSION.tar.gz" -o libtor.tar.gz
 RUN mkdir -p /usr/src/libtorrent
-RUN tar -xzf libtor.tar.gz -C /usr/src/libtorrent --strip-components=1
+RUN gunziplibtor.tar.gz
+RUN tar -xf libtor.tar -C /usr/src/libtorrent --strip-components=1
+RUN rm libtor.tar*
 RUN rm libtor.tar.gz*
 WORKDIR /usr/src/libtorrent/
 RUN ./autotool.sh

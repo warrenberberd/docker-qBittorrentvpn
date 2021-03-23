@@ -73,7 +73,7 @@ RUN make install
 RUN QBIT_VERSION=$(curl --silent "https://github.com/qbittorrent/qBittorrent/tags" 2>&1 | grep -m 1 'release-' |  sed -e 's~^[t]*~~;s~[t]*$~~' | sed -n 's/.*href="\([^"]*\).*/\1/p' | sed 's!.*/!!')
 RUN curl -SL "https://github.com/qbittorrent/qBittorrent/archive/$QBIT_VERSION.tar.gz" -o qbittorrent.tar.gz
 RUN mkdir -p /usr/src/qbittorrent
-RUN tar -xzf qbittorrent.tar.gz -C /usr/src/qbittorrent --strip-components=1
+RUN tar -xf qbittorrent.tar.gz -C /usr/src/qbittorrent --strip-components=1
 RUN rm qbittorrent.tar.gz*
 WORKDIR /usr/src/qbittorrent/src/app
 RUN patch -i /tmp/patches/main.patch

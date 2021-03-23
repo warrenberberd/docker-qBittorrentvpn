@@ -67,8 +67,7 @@ WORKDIR /usr/src/libtorrent/
 RUN ./autotool.sh
 RUN export LDFLAGS=-L/opt/local/lib
 RUN export CXXFLAGS=-I/opt/local/include
-RUN ./configure --disable-debug --enable-encryption --prefix=/usr --disable-dependency-tracking
-RUN make install
+RUN ./configure --disable-debug --enable-encryption --prefix=/usr --disable-dependency-tracking && make && make install
 RUN QBIT_VERSION=$(curl --silent "https://github.com/qbittorrent/qBittorrent/tags" 2>&1 | grep -m 1 'release-' |  sed -e 's~^[t]*~~;s~[t]*$~~' | sed -n 's/.*href="\([^"]*\).*/\1/p' | sed 's!.*/!!')
 RUN curl -SL "https://github.com/qbittorrent/qBittorrent/archive/$QBIT_VERSION.tar.gz" -o qbittorrent.tar.gz
 RUN mkdir -p /usr/src/qbittorrent
@@ -77,7 +76,7 @@ RUN rm qbittorrent.tar.gz*
 WORKDIR /usr/src/qbittorrent/src/app
 RUN patch -i /tmp/patches/main.patch
 WORKDIR /usr/src/qbittorrent/
-RUN ./configure --disable-gui --prefix=/usr && make install
+RUN ./configure --disable-gui --prefix=/usr && make && make install
 WORKDIR /
 RUN rm -rf /usr/src/libtorrent
 RUN rm -rf /usr/src/qbittorrent

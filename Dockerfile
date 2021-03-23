@@ -39,8 +39,9 @@ RUN buildDeps=" \
 		xz \
 	"; \
     set -x \
-    && apk add --update --virtual .build-deps $buildDeps \
-    && export LIBTOR_VERSION=$(curl --silent "https://github.com/arvidn/libtorrent/tags" 2>&1 | grep -m 1 'libtorrent-' |  sed -e 's~^[ \t]*~~;s~[ \t]*$~~' | sed -n 's/.*href="\([^"]*\).*/\1/p' | sed 's!.*/!!') \
+    && apk add --update --virtual .build-deps $buildDeps
+    
+RUN export LIBTOR_VERSION=$(curl --silent "https://github.com/arvidn/libtorrent/tags" 2>&1 | grep -m 1 'libtorrent-' |  sed -e 's~^[ \t]*~~;s~[ \t]*$~~' | sed -n 's/.*href="\([^"]*\).*/\1/p' | sed 's!.*/!!') \
     && curl -L "https://github.com/arvidn/libtorrent/archive/$LIBTOR_VERSION.tar.gz" -o libtor.tar.gz \
     && mkdir -p /usr/src/libtorrent \
     && tar -xzf libtor.tar.gz -C /usr/src/libtorrent --strip-components=1 \
@@ -65,8 +66,9 @@ RUN buildDeps=" \
     && make install \
     && cd / \
     && rm -rf /usr/src/libtorrent \
-    && rm -rf /usr/src/qbittorrent \
-    && runDeps="$( \
+    && rm -rf /usr/src/qbittorrent
+    
+RUN runDeps="$( \
 	scanelf --needed --nobanner /usr/local/bin/qbittorrent-nox \
 		| awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
 		| xargs -r apk info --installed \

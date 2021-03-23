@@ -27,7 +27,6 @@ RUN apk add --no-cache --upgrade gawk
 RUN apk add --no-cache --upgrade pacman 
 RUN apk add --no-cache --upgrade net-tools 
 RUN apk add --no-cache --upgrade tar
-RUN apk add --no-cache --upgrade gzip
 RUN update-ca-certificates
 
 RUN usermod -u 99 nobody
@@ -79,9 +78,7 @@ RUN rm qbittorrent.tar.gz*
 WORKDIR /usr/src/qbittorrent/src/app
 RUN patch -i /tmp/patches/main.patch
 WORKDIR /usr/src/qbittorrent/
-RUN ./configure --disable-gui --prefix=/usr
-RUN make -j$(nproc)
-RUN make install
+RUN ./configure --disable-gui --prefix=/usr && make -j$(nproc) && make install
 WORKDIR /
 RUN rm -rf /usr/src/libtorrent
 RUN rm -rf /usr/src/qbittorrent

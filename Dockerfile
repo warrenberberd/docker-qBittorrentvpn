@@ -78,7 +78,7 @@ RUN rm qbittorrent.tar.gz*
 WORKDIR /usr/src/qbittorrent/src/app
 RUN patch -i /tmp/patches/main.patch
 WORKDIR /usr/src/qbittorrent/
-RUN ./configure --disable-gui --prefix=/usr && make -j$(nproc) && make install
+RUN ./configure --disable-gui --prefix=/usr && make install
 WORKDIR /
 RUN rm -rf /usr/src/libtorrent
 RUN rm -rf /usr/src/qbittorrent

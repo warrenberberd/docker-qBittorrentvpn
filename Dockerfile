@@ -62,7 +62,7 @@ RUN buildDeps=" \
 RUN export LIBTOR_VERSION=$(curl --silent "https://github.com/arvidn/libtorrent/tags" 2>&1 | grep -m 1 'libtorrent-' |  sed -e 's~^[t]*~~;s~[t]*$~~' | sed -n 's/.*href="\([^"]*\).*/\1/p' | sed 's!.*/!!') \
 && curl -SL "https://github.com/arvidn/libtorrent/archive/$LIBTOR_VERSION.tar.gz" \
 && mkdir -p /usr/src/libtorrent \
-&& tar -xzf "$LIBTOR_VERSION.tar.gz" -C /usr/src/libtorrent --strip-components=1 \
+&& tar -xf "$LIBTOR_VERSION.tar.gz" -C /usr/src/libtorrent --strip-components=1 \
 && rm "$LIBTOR_VERSION.tar.gz"
 WORKDIR /usr/src/libtorrent/
 RUN ./autotool.sh

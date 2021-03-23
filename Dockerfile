@@ -23,6 +23,7 @@ RUN apk add --no-cache unrar
 RUN apk add --no-cache findutils 
 RUN apk add --no-cache perl 
 RUN apk add --no-cache gawk 
+RUN apk add --no-cache libcrypto1.1
 RUN apk add --no-cache pacman 
 RUN apk add --no-cache net-tools 
 RUN update-ca-certificates

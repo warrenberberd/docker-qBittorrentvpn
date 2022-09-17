@@ -39,24 +39,37 @@ if [[ "${DEBUG}" == "true" ]]; then
 fi
 
 # check we have iptable_mangle, if so setup fwmark
-lsmod | grep iptable_mangle
-iptable_mangle_exit_code=$?
+#lsmod | grep iptable_mangle
+#iptable_mangle_exit_code=$?
 
-if [[ $iptable_mangle_exit_code == 0 ]]; then
+#if [[ $iptable_mangle_exit_code == 0 ]]; then
+#
+#	echo "[info] iptable_mangle support detected, adding fwmark for tables" | ts '%Y-%m-%d %H:%M:%.S'
+#
+#	# setup route for qbittorrent webui using set-mark to route traffic for port 8080 to eth0
+#	if [ -z "${WEBUI_PORT}" ]; then
+#		echo "8080    webui" >> /etc/iproute2/rt_tables
+#	else
+#		echo "${WEBUI_PORT}     webui" >> /etc/iproute2/rt_tables
+#	fi
+#	
+#	ip rule add fwmark 1 table webui
+#	ip route add default via ${DEFAULT_GATEWAY} table webui
+#
+#fi
 
-	echo "[info] iptable_mangle support detected, adding fwmark for tables" | ts '%Y-%m-%d %H:%M:%.S'
+# Default port for WEB_UI
+[ -z "${WEBUI_PORT}" ] && WEBUI_PORT="8080"
 
-	# setup route for qbittorrent webui using set-mark to route traffic for port 8080 to eth0
-	if [ -z "${WEBUI_PORT}" ]; then
-		echo "8080    webui" >> /etc/iproute2/rt_tables
-	else
-		echo "${WEBUI_PORT}     webui" >> /etc/iproute2/rt_tables
-	fi
-	
-	ip rule add fwmark 1 table webui
-	ip route add default via ${DEFAULT_GATEWAY} table webui
+echo "[info] Setup route table for webui"  | ts '%Y-%m-%d %H:%M:%.S'
+echo "${WEBUI_PORT}    webui" >> /etc/iproute2/rt_tables
 
-fi
+ip route flush table ${WEBUI_PORT}
+ip route add ${LAN_NETWORK} dev eth0 table ${WEBUI_PORT}
+ip route add default via ${DEFAULT_GATEWAY} dev eth0 table ${WEBUI_PORT}
+
+ip rule add dport ${WEBUI_PORT} table ${WEBUI_PORT}
+ip rule add sport ${WEBUI_PORT} table ${WEBUI_PORT}
 
 # identify docker bridge interface name (probably eth0)
  docker_interface=$(netstat -ie | grep -vE "lo|tun|tap" | sed -n '1!p' | grep -P -o -m 1 '^[\w]+')
@@ -99,13 +112,13 @@ iptables -A INPUT -s "${docker_network_cidr}" -d "${docker_network_cidr}" -j ACC
 iptables -A INPUT -i eth0 -p $VPN_PROTOCOL --sport $VPN_PORT -j ACCEPT
 
 # accept input to qbittorrent webui port
-if [ -z "${WEBUI_PORT}" ]; then
-	iptables -A INPUT -i eth0 -p tcp --dport 8080 -j ACCEPT
-	iptables -A INPUT -i eth0 -p tcp --sport 8080 -j ACCEPT
-else
+#if [ -z "${WEBUI_PORT}" ]; then
+#	iptables -A INPUT -i eth0 -p tcp --dport 8080 -j ACCEPT
+#	iptables -A INPUT -i eth0 -p tcp --sport 8080 -j ACCEPT
+#else
 	iptables -A INPUT -i eth0 -p tcp --dport ${WEBUI_PORT} -j ACCEPT
 	iptables -A INPUT -i eth0 -p tcp --sport ${WEBUI_PORT} -j ACCEPT
-fi
+#fi
 
 # accept input to qbittorrent daemon port - used for lan access
 if [ -z "${INCOMING_PORT}" ]; then
@@ -141,27 +154,27 @@ iptables -A OUTPUT -s "${docker_network_cidr}" -d "${docker_network_cidr}" -j AC
 iptables -A OUTPUT -o eth0 -p $VPN_PROTOCOL --dport $VPN_PORT -j ACCEPT
 
 # if iptable mangle is available (kernel module) then use mark
-if [[ $iptable_mangle_exit_code == 0 ]]; then
-
-	# accept output from qBittorrent webui port - used for external access
-	if [ -z "${WEBUI_PORT}" ]; then
-		iptables -t mangle -A OUTPUT -p tcp --dport 8080 -j MARK --set-mark 1
-		iptables -t mangle -A OUTPUT -p tcp --sport 8080 -j MARK --set-mark 1
-	else
-		iptables -t mangle -A OUTPUT -p tcp --dport ${WEBUI_PORT} -j MARK --set-mark 1
-		iptables -t mangle -A OUTPUT -p tcp --sport ${WEBUI_PORT} -j MARK --set-mark 1
-	fi
-	
-fi
+#if [[ $iptable_mangle_exit_code == 0 ]]; then
+#
+#	# accept output from qBittorrent webui port - used for external access
+#	if [ -z "${WEBUI_PORT}" ]; then
+#		iptables -t mangle -A OUTPUT -p tcp --dport 8080 -j MARK --set-mark 1
+#		iptables -t mangle -A OUTPUT -p tcp --sport 8080 -j MARK --set-mark 1
+#	else
+#		iptables -t mangle -A OUTPUT -p tcp --dport ${WEBUI_PORT} -j MARK --set-mark 1
+#		iptables -t mangle -A OUTPUT -p tcp --sport ${WEBUI_PORT} -j MARK --set-mark 1
+#	fi
+#	
+#fi
 
 # accept output from qBittorrent webui port - used for lan access
-if [ -z "${WEBUI_PORT}" ]; then
-	iptables -A OUTPUT -o eth0 -p tcp --dport 8080 -j ACCEPT
-	iptables -A OUTPUT -o eth0 -p tcp --sport 8080 -j ACCEPT
-else
+#if [ -z "${WEBUI_PORT}" ]; then
+#	iptables -A OUTPUT -o eth0 -p tcp --dport 8080 -j ACCEPT
+#	iptables -A OUTPUT -o eth0 -p tcp --sport 8080 -j ACCEPT
+#else
 	iptables -A OUTPUT -o eth0 -p tcp --dport ${WEBUI_PORT} -j ACCEPT
 	iptables -A OUTPUT -o eth0 -p tcp --sport ${WEBUI_PORT} -j ACCEPT
-fi
+#fi
 
 # accept output to qBittorrent daemon port - used for lan access
 if [ -z "${INCOMING_PORT}" ]; then

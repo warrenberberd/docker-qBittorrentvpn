@@ -61,8 +61,10 @@ fi
 # Default port for WEB_UI
 [ -z "${WEBUI_PORT}" ] && WEBUI_PORT="8080"
 
-echo "[info] Setup route table for webui"  | ts '%Y-%m-%d %H:%M:%.S'
-echo "${WEBUI_PORT}    webui" >> /etc/iproute2/rt_tables
+if ! grep "webui" /etc/iproute2/rt_tables > /dev/null;then
+      echo "[info] Setup route table for webui"  | ts '%Y-%m-%d %H:%M:%.S'
+      echo "${WEBUI_PORT}    webui" >> /etc/iproute2/rt_tables
+fi
 
 ip route flush table ${WEBUI_PORT}
 ip route add ${LAN_NETWORK} dev eth0 table ${WEBUI_PORT}
